@@ -12,6 +12,16 @@ class Piece
 
   def jump_moves
     jump_moves = []
+    y, x = self.pos
+    slide_diffs.each do |deltas|
+      dy, dx = deltas
+      one_away = [y + dy, x + dx]
+      if !self.board.pos_available?(one_away)
+        jump_pos = [one_away[0] + dy, one_away[1] + dx]
+        jump_moves << jump_pos if self.board.pos_available?(jump_pos)
+      end
+    end
+    jump_moves
   end
 
   def maybe_promote

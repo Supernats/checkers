@@ -26,6 +26,7 @@ class Board
     [:white, :red].each do |color|
       set_color(color)
     end
+    nil
   end
 
   def set_color(color)
@@ -38,7 +39,7 @@ class Board
         end
       end
     end
-
+    nil
   end
 
   def move_error(start_pos, end_pos)
