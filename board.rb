@@ -11,16 +11,6 @@ class Board
     nil
   end
 
-  def [](pos)
-    y, x = pos
-    @grid[y][x]
-  end
-
-  def []=(pos, piece)
-    y, x = pos
-    @grid[y][x] = piece
-  end
-
   def perform_slide(start_pos, end_pos)
     move_error(start_pos, end_pos)
     piece = self.grid[start_pos]
@@ -31,9 +21,6 @@ class Board
   def perform_jump(start_pos, end_pos)
 
   end
-
-
-  protected
 
   def set_pieces
     [:white, :red].each do |color|
@@ -54,7 +41,6 @@ class Board
 
   end
 
-
   def move_error(start_pos, end_pos)
     unless !pos_available?(start_pos) && pos_available?(end_pos)
       raise "invalid move"
@@ -62,9 +48,8 @@ class Board
   end
 
   def pos_available?(pos)
-    self.grid[y, x].nil?
+    y, x = pos
+    self.grid[y][x].nil?
   end
-
-
 
 end
