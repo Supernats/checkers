@@ -13,6 +13,10 @@ class Board
 
   protected
 
+  def valid_pos?(pos)
+    @grid[y, x].nil?
+  end
+
   def []=(pos, piece)
     y, x = pos
     @grid[y][x] = piece
