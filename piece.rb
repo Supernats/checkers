@@ -1,8 +1,8 @@
 class Piece
   attr_accessor :pos, :color, :promoted, :board
 
-  def initialize(options = {})
-    self.pos, self.color, self.board = options[:pos, :color, :board]
+  def initialize(pos, color, board)
+    self.pos, self.color, self.board = pos, color, board
     self.promoted = false
   end
 

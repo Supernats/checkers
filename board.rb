@@ -1,4 +1,8 @@
+require_relative 'piece'
+
 class Board
+
+  $pieces = 0
 
   def initialize(fill_board = true)
     @grid = Array.new(8) { Array.new(8) }
@@ -32,15 +36,15 @@ class Board
   end
 
   def set_color(color)
-    row_i, row_j = color == :white ? 0, 2 : 5, 7
-    (row_i..row_j).each do |row|
+    setting_rows = color == :white ? (0..2) : (5..7)
+    setting_rows.each do |row|
       (0..7).each do |column|
         if (row.even? && column.odd?) || (row.odd? && column.even?)
-          @grid[row, column] =
-            Piece.new({ :pos => [row, column], :color => color, :board => self })
+          @grid[row, column] = Piece.new([row, column], color, self)
         end
       end
     end
+
   end
 
 
