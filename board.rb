@@ -11,9 +11,29 @@ class Board
     @grid[y][x]
   end
 
+  def perform_slide(start_pos, end_pos)
+    move_error(start_pos, end_pos)
+    piece = @grid[start_pos]
+    @grid[end_pos] = piece
+    @grid[start_pos] = nil
+  end
+
+  def perform_jump(start_pos, end_pos)
+
+  end
+
+
   protected
 
-  def valid_pos?(pos)
+  def move_error(start_pos, end_pos)
+    raise "invalid move" unless valid_start?(start_pos) && valid_end?(end_pos)
+  end
+
+  def valid_start?(pos)
+    !@grid[y, x].nil?
+  end
+
+  def valid_end?(pos)
     @grid[y, x].nil?
   end
 
