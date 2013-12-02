@@ -4,10 +4,9 @@ class Board
 
   attr_accessor :grid
 
-  $pieces = 0
 
   def initialize(fill_board = true)
-    @grid = Array.new(8) { Array.new(8) }
+    self.grid = Array.new(8) { Array.new(8) }
     set_pieces if fill_board
     nil
   end
@@ -17,11 +16,16 @@ class Board
     @grid[y][x]
   end
 
+  def []=(pos, piece)
+    y, x = pos
+    @grid[y][x] = piece
+  end
+
   def perform_slide(start_pos, end_pos)
     move_error(start_pos, end_pos)
-    piece = @grid[start_pos]
-    @grid[end_pos] = piece
-    @grid[start_pos] = nil
+    piece = self.grid[start_pos]
+    self.grid[end_pos] = piece
+    self.grid[start_pos] = nil
   end
 
   def perform_jump(start_pos, end_pos)
@@ -42,8 +46,8 @@ class Board
     setting_rows.each do |row|
       (0..7).each do |column|
         if (row.even? && column.odd?) || (row.odd? && column.even?)
-          @grid[row, column] = Piece.new([row, column], color, self)
-          $pieces += 1
+          piece = Piece.new([row, column], color, self)
+          self.grid[row][column] = piece
         end
       end
     end
@@ -58,12 +62,9 @@ class Board
   end
 
   def pos_available?(pos)
-    @grid[y, x].nil?
+    self.grid[y, x].nil?
   end
 
-  def []=(pos, piece)
-    y, x = pos
-    @grid[y][x] = piece
-  end
+
 
 end
