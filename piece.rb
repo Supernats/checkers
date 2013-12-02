@@ -1,8 +1,8 @@
 class Piece
   attr_accessor :pos, :color, :promoted, :board
 
-  def initialize(pos, color)
-    self.pos, self.color = pos, color
+  def initialize(options = {})
+    self.pos, self.color, self.board = options[:pos, :color, :board]
     self.promoted = false
   end
 
@@ -12,10 +12,14 @@ class Piece
 
   def maybe_promote
     promote_row = self.color == :white ? 0 : 7
-    @promoted = true if self.pos[0] == promote_row
+    self.promoted = true if self.pos[0] == promote_row
   end
 
-  def move_diffs
+  def move(end_pos)
+    self.pos = end_pos
+  end
+
+  def slide_diffs
     slide_diffs = [[advance, -1],[advance, 1]]
     if self.promoted
       slide_diffs.concat([advance * -1, -1],[advance * -1, 1])
@@ -23,8 +27,15 @@ class Piece
     slide_diffs
   end
 
-  def move(end_pos)
-    self.pos = end_pos
+  def slide_moves
+    slide_moves = []
+    y, x = self.pos
+    slide_diffs.each do |deltas|
+      dy, dx = deltas
+      end_pos = [y + dy, x + dx]
+      slide_moves << end_pos if self.board.pos_available?(end_pos)
+    end
+    slid_moves
   end
 
 end

@@ -26,14 +26,12 @@ class Board
   protected
 
   def move_error(start_pos, end_pos)
-    raise "invalid move" unless valid_start?(start_pos) && valid_end?(end_pos)
+    unless !pos_available?(start_pos) && pos_available?(end_pos)
+      raise "invalid move"
+    end
   end
 
-  def valid_start?(pos)
-    !@grid[y, x].nil?
-  end
-
-  def valid_end?(pos)
+  def pos_available?(pos)
     @grid[y, x].nil?
   end
 
