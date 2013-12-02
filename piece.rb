@@ -23,6 +23,15 @@ class Piece
     self.pos = end_pos
   end
 
+  def pos
+    @pos
+  end
+
+  # def [](pos)
+  #   y, x = pos
+  #   self.pos = pos
+  # end
+
   def slide_diffs
     slide_diffs = [[advance, -1],[advance, 1]]
     if self.promoted
