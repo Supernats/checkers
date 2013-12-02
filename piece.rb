@@ -23,7 +23,6 @@ class Piece
     @promoted = true if self.pos[0] == promote_row
   end
 
-
   def perform_slide
 
   end
