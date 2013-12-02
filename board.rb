@@ -25,6 +25,25 @@ class Board
 
   protected
 
+  def set_pieces
+    [:white, :red].each do |color|
+      set_color(color)
+    end
+  end
+
+  def set_color(color)
+    row_i, row_j = color == :white ? 0, 2 : 5, 7
+    (row_i..row_j).each do |row|
+      (0..7).each do |column|
+        if (row.even? && column.odd?) || (row.odd? && column.even?)
+          @grid[row, column] =
+            Piece.new({ :pos => [row, column], :color => color, :board => self })
+        end
+      end
+    end
+  end
+
+
   def move_error(start_pos, end_pos)
     unless !pos_available?(start_pos) && pos_available?(end_pos)
       raise "invalid move"

@@ -10,6 +10,10 @@ class Piece
     self.color == :white ? -1 : 1
   end
 
+  def jump_moves
+    jump_moves = []
+  end
+
   def maybe_promote
     promote_row = self.color == :white ? 0 : 7
     self.promoted = true if self.pos[0] == promote_row
