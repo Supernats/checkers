@@ -29,7 +29,7 @@ class Board
   end
 
   def set_color(color)
-    setting_rows = color == :white ? (0..2).to_a : (5..7).to_a
+    setting_rows = color == :red ? (0..2).to_a : (5..7).to_a
     setting_rows.each do |row|
       (0..7).each do |column|
         if (row.even? && column.odd?) || (row.odd? && column.even?)

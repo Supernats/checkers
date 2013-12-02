@@ -39,7 +39,7 @@ class Piece
       end_pos = [y + dy, x + dx]
       slide_moves << end_pos if self.board.pos_available?(end_pos)
     end
-    slid_moves
+    slide_moves
   end
 
 end
