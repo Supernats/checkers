@@ -26,6 +26,18 @@ class Board
     duped_board
   end
 
+  def collect_pieces
+    pieces = []
+    (0..7).each do |row|
+      (0..7).each do |column|
+        if !self.grid[row][column].nil?
+          pieces << self.grid[row][column]
+        end
+      end
+    end
+    pieces
+  end
+
   def get_jumped_pos(start_pos, end_pos)
     dy = (end_pos[0] - start_pos[0])/2
     dx = (end_pos[1] - start_pos[1])/2
@@ -51,7 +63,6 @@ class Board
     else
       raise InvalidMoveError
     end
-
   end
 
   def perform_moves!(move_sequence)
