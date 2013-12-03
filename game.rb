@@ -1,3 +1,5 @@
+require_relative 'board'
+
 class Game
   attr_accessor :board, :current_player
 
@@ -8,8 +10,10 @@ class Game
 
   def play
     puts "Let's play CHECKERS!!!"
+    puts self.board
 
     until one_color_left?
+      puts "Current player: #{self.current_player.to_s}"
       take_turn
       puts self.board
     end
@@ -65,15 +69,7 @@ class Game
     until more_moves == 0
       moves << get_move
       puts "Any more moves? 1 for yes, 0 for no"
-      begin
-        more_moves = Integer(gets.chomp)
-      rescue
-        retry
-      end
-      if more_moves != 1 || more_moves != 0
-        puts "I will not suffer your insolence!"
-        break
-      end
+      more_moves = Integer(gets.chomp)
     end
     moves
   end
