@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 require_relative 'piece'
 
 class Board
@@ -11,15 +14,39 @@ class Board
     nil
   end
 
-  def perform_slide(start_pos, end_pos)
+  # def perform_slide(start_pos, end_pos)
+  #   move_error(start_pos, end_pos)
+  #   move_piece = self.grid[start_pos[0]][start_pos[1]]
+  #   if move_piece.moves.include?(start_pos)
+  #
+  # end
+  #
+  # def perform_jump(start_pos, end_pos)
+  #
+  # end
+
+  def perform_moves(start_pos, end_pos)
     move_error(start_pos, end_pos)
-    piece = self.grid[start_pos]
-    self.grid[end_pos] = piece
-    self.grid[start_pos] = nil
+    move_piece = self.grid[start_pos[0]][start_pos[1]]
+    if move_piece.moves.include?(start_pos)
+    end
   end
 
-  def perform_jump(start_pos, end_pos)
-
+  def to_s
+    board_string = ""
+    self.grid.each_index do |row|
+      row_string = ""
+      self.grid[row].each_index do |column|
+        if self.grid[row][column].nil?
+          row_string += 'X'
+        else
+          row_string += self.grid[row][column].to_s
+        end
+        row_string += ' '
+      end
+      board_string += "#{row_string}\n"
+    end
+    board_string
   end
 
   def set_pieces
@@ -49,8 +76,16 @@ class Board
   end
 
   def pos_available?(pos)
-    y, x = pos
-    self.grid[y][x].nil?
+    self.grid[pos[0]][pos[1]].nil?
   end
+
+  def pos_on_board?(pos)
+    pos.none? { |dimension| dimension < 0 || dimension > 7 }
+  end
+
+  def pos_valid?(pos)
+    pos_available?(pos) && pos_on_board?(pos)
+  end
+
 
 end

@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 class Piece
   attr_accessor :pos, :color, :promoted, :board
 
   def initialize(pos, color, board)
     self.pos, self.color, self.board = pos, color, board
-    self.promoted = false
+    maybe_promote
   end
 
   def advance
@@ -18,7 +20,7 @@ class Piece
       one_away = [y + dy, x + dx]
       if !self.board.pos_available?(one_away)
         jump_pos = [one_away[0] + dy, one_away[1] + dx]
-        jump_moves << jump_pos if self.board.pos_available?(jump_pos)
+        jump_moves << jump_pos if self.board.pos_valid?(jump_pos)
       end
     end
     jump_moves
@@ -33,10 +35,14 @@ class Piece
     self.pos = end_pos
   end
 
+  def moves
+    slide_moves + jump_moves
+  end
+
   def slide_diffs
     slide_diffs = [[advance, -1],[advance, 1]]
     if self.promoted
-      slide_diffs.concat([advance * -1, -1],[advance * -1, 1])
+      slide_diffs.push([-advance, -1],[-advance, 1])
     end
     slide_diffs
   end
@@ -47,9 +53,29 @@ class Piece
     slide_diffs.each do |deltas|
       dy, dx = deltas
       end_pos = [y + dy, x + dx]
-      slide_moves << end_pos if self.board.pos_available?(end_pos)
+      slide_moves << end_pos if self.board.pos_valid?(end_pos)
     end
     slide_moves
   end
+
+  def to_s
+    case self.color
+    when :white
+      if self.promoted
+        '♔'
+      else
+        '○'
+      end
+    when :red
+      if self.promoted
+        '♚'
+      else
+        '●'
+      end
+    end
+  end
+
+
+
 
 end
