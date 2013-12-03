@@ -38,7 +38,6 @@ class Piece
     !self.board.pos_available?(pos) && other_piece.color != self.color
   end
 
-
   def maybe_promote
     promote_row = self.color == :white ? 0 : 7
     self.promoted = true if self.pos[0] == promote_row

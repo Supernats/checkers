@@ -17,9 +17,14 @@ class Board
   def dup
     duped_board = Board.new(false)
     (0..7).each do |row|
+      (0..7).each do |column|
+        if !self.grid[row][column].nil?
+          duped_piece = self.grid[row][column].dup
+          duped_board.grid[row][column] = duped_piece
+        end
+      end
     end
   end
-
 
   def get_jumped_pos(start_pos, end_pos)
     dy = (end_pos[0] - start_pos[0])/2
@@ -38,6 +43,14 @@ class Board
       return true
     end
     false
+  end
+
+  def perform_moves(move_sequence)
+
+  end
+
+  def perform_moves!(move_sequence)
+
   end
 
   def perform_slide(start_pos, end_pos)
