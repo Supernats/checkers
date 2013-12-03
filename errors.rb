@@ -1,5 +1,10 @@
 class InvalidMoveError < StandardError
-  def message
-    "invalid move"
+  def initialize(message = nil)
+    super
+    if message.nil?
+      @message = "invalid move"
+    else
+      @message = message
+    end
   end
 end
