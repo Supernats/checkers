@@ -56,7 +56,7 @@ class Board
 
   def perform_moves!(move_sequence)
     if move_sequence.count == 1
-      start_pos, end_pos = move_sequence
+      start_pos, end_pos = move_sequence[0]
       perform_jump(start_pos, end_pos) if !perform_slide(start_pos, end_pos)
     else
       move_sequence.each do |move|
@@ -65,6 +65,23 @@ class Board
       end
     end
   end
+
+  # def perform_moves!(move_sequence)
+  #   if move_sequence.count == 1
+  #     start_pos, end_pos = move_sequence[0]
+  #     move_piece = self.grid[start_pos[0]][start_pos[1]]
+  #     if move_piece.slide_moves.include?(end_pos)
+  #       perform_slide(start_pos, end_pos)
+  #     elsif move_piece.jump_moves.include?(end_pos)
+  #       perform_jump(start_pos, end_pos)
+  #     end
+  #   else
+  #     move_sequence.each do |move|
+  #       start_pos, end_pos = move
+  #       perform_jump(start_pos, end_pos)
+  #     end
+  #   end
+  # end
 
   def perform_slide(start_pos, end_pos)
     perform_move(start_pos, end_pos)
