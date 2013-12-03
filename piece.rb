@@ -5,11 +5,18 @@ class Piece
 
   def initialize(pos, color, board)
     self.pos, self.color, self.board = pos, color, board
+    self.promoted = false
     maybe_promote
   end
 
   def advance
     self.color == :white ? -1 : 1
+  end
+
+  def dup
+    duped_piece = Piece.new(self.pos, self.color, self.board)
+    duped_piece.color = self.color
+    duped_piece
   end
 
   def jump_moves
@@ -18,13 +25,19 @@ class Piece
     slide_diffs.each do |deltas|
       dy, dx = deltas
       one_away = [y + dy, x + dx]
-      if !self.board.pos_available?(one_away)
+      if jumpable?(one_away)
         jump_pos = [one_away[0] + dy, one_away[1] + dx]
         jump_moves << jump_pos if self.board.pos_valid?(jump_pos)
       end
     end
     jump_moves
   end
+
+  def jumpable?(pos)
+    other_piece = self.board.grid[pos[0]][pos[1]]
+    !self.board.pos_available?(pos) && other_piece.color != self.color
+  end
+
 
   def maybe_promote
     promote_row = self.color == :white ? 0 : 7

@@ -2,6 +2,7 @@
 
 
 require_relative 'piece'
+require_relative 'errors'
 
 class Board
 
@@ -9,27 +10,47 @@ class Board
 
 
   def initialize(fill_board = true)
-    self.grid = Array.new(8) { Array.new(8) }
+    @grid = Array.new(8) { Array.new(8) }
     set_pieces if fill_board
-    nil
   end
 
-  # def perform_slide(start_pos, end_pos)
-  #   move_error(start_pos, end_pos)
-  #   move_piece = self.grid[start_pos[0]][start_pos[1]]
-  #   if move_piece.moves.include?(start_pos)
-  #
-  # end
-  #
-  # def perform_jump(start_pos, end_pos)
-  #
-  # end
+  def dup
+    duped_board = Board.new(false)
+    (0..7).each do |row|
+    end
+  end
 
-  def perform_moves(start_pos, end_pos)
+
+  def get_jumped_pos(start_pos, end_pos)
+    dy = (end_pos[0] - start_pos[0])/2
+    dx = (end_pos[1] - start_pos[1])/2
+    [start_pos[0] + dy, start_pos[1] + dx]
+  end
+
+  def perform_move(start_pos, end_pos)
     move_error(start_pos, end_pos)
     move_piece = self.grid[start_pos[0]][start_pos[1]]
-    if move_piece.moves.include?(start_pos)
+    if move_piece.moves.include?(end_pos)
+      move_piece.pos = end_pos
+      move_piece.maybe_promote
+      self.grid[end_pos[0]][end_pos[1]] = move_piece
+      self.grid[start_pos[0]][start_pos[1]] = nil
+      return true
     end
+    false
+  end
+
+  def perform_slide(start_pos, end_pos)
+    perform_move(start_pos, end_pos)
+  end
+
+  def perform_jump(start_pos, end_pos)
+    move_performed = perform_move(start_pos, end_pos)
+    if move_performed
+      jumped_pos = get_jumped_pos(start_pos, end_pos)
+      self.grid[jumped_pos[0]][jumped_pos[1]] = nil
+    end
+    move_performed
   end
 
   def to_s
@@ -71,7 +92,7 @@ class Board
 
   def move_error(start_pos, end_pos)
     unless !pos_available?(start_pos) && pos_available?(end_pos)
-      raise "invalid move"
+      raise InvalidMoveError
     end
   end
 
