@@ -2,20 +2,30 @@ require_relative 'board'
 
 if __FILE__ == $PROGRAM_NAME
 
-board = Board.new(false)
-board.grid[1][6] = Piece.new([1,6], :white, board)
-board.grid[1][4] = Piece.new([1,4], :white, board)
-board.grid[0][5] = Piece.new([0,5], :red, board)
-
+board = Board.new()
 puts board
-# p board.grid[0][5].slide_moves
-# p board.grid[0][5].jump_moves
-p board.grid[0][5].moves
-# board.perform_slide([0,5],[1,4])
-board.perform_jump([0,5],[2,7])
-board.perform_slide([1,4],[0,3])
+puts 0
+board.perform_slide([5,0],[4,1])
 puts board
-
+puts 1
+board.perform_slide([2,1],[3,2])
+puts board
+puts 2
+board.perform_slide([5,4],[4,5])
+puts board
+puts 3
+board.perform_slide([6,3],[5,4])
+puts board
+puts 4
+board.perform_slide([7,2],[6,3])
+puts board
+puts 5
+# board.perform_moves!([[[3,2],[5,0]],[[5,0],[7,2]]])
+board.perform_moves([[[3,2],[5,0]],[[5,0],[7,2]]])
+puts board
+#
+# puts board
+# puts 6
 
 
 end

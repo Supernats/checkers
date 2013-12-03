@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 require_relative 'piece'
 require_relative 'errors'
 
@@ -24,6 +23,7 @@ class Board
         end
       end
     end
+    duped_board
   end
 
   def get_jumped_pos(start_pos, end_pos)
@@ -33,9 +33,8 @@ class Board
   end
 
   def perform_move(start_pos, end_pos)
-    move_error(start_pos, end_pos)
     move_piece = self.grid[start_pos[0]][start_pos[1]]
-    if move_piece.moves.include?(end_pos)
+    if valid_move?(start_pos, end_pos)
       move_piece.pos = end_pos
       move_piece.maybe_promote
       self.grid[end_pos[0]][end_pos[1]] = move_piece
@@ -46,11 +45,25 @@ class Board
   end
 
   def perform_moves(move_sequence)
+    if valid_move_seq?(move_sequence)
+      perform_moves!(move_sequence)
+      true
+    else
+      raise InvalidMoveError
+    end
 
   end
 
   def perform_moves!(move_sequence)
-
+    if move_sequence.count == 1
+      start_pos, end_pos = move_sequence
+      perform_jump(start_pos, end_pos) if !perform_slide(start_pos, end_pos)
+    else
+      move_sequence.each do |move|
+        start_pos, end_pos = move
+        perform_jump(start_pos, end_pos)
+      end
+    end
   end
 
   def perform_slide(start_pos, end_pos)
@@ -103,9 +116,24 @@ class Board
     nil
   end
 
-  def move_error(start_pos, end_pos)
-    unless !pos_available?(start_pos) && pos_available?(end_pos)
-      raise InvalidMoveError
+  def valid_move_seq?(move_sequence)
+    duped_board = self.dup
+    begin
+      duped_board.perform_moves!(move_sequence)
+    rescue
+      return false
+    else
+      return true
+    end
+  end
+
+  def valid_move?(start_pos, end_pos)
+    move_piece = self.grid[start_pos[0]][start_pos[1]]
+    if !move_piece.moves.include?(end_pos) ||
+        self.grid[start_pos[0]][start_pos[1]].nil?
+        raise InvalidMoveError, "invalid move"
+    else
+      true
     end
   end
 
